@@ -7,6 +7,7 @@ export class LoginPage extends BasePage{
     readonly loginButton: Locator;
     readonly registerLink: Locator;
     readonly forgotPasswordLink: Locator;
+    readonly errorMessage: Locator;
     
     constructor(page: Page){
         super(page);
@@ -15,6 +16,7 @@ export class LoginPage extends BasePage{
         this.loginButton = page.getByRole('button', {name: 'Login'});
         this.registerLink = page.getByRole('link', {name: 'Register your account'});
         this.forgotPasswordLink = page.getByRole('link', {name: 'Forgot your Password?'});
+        this.errorMessage = page.getByText('Invalid email or password');
     }
 
     async naviagateToLogin(){
@@ -27,6 +29,11 @@ export class LoginPage extends BasePage{
         await this.click(this.loginButton);
     }
 
+    async getErrorMessage(): Promise<string>{
+        await this.waitFOrVisible(this.errorMessage);
+        return await this.getText(this.errorMessage);
+    }
+    
     async clearCredentials(){
         await this.emailInput.clear();
         await this.passwordInput.clear();
