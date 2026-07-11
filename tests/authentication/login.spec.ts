@@ -10,7 +10,7 @@ test.describe('Authentication', () => {
     test('[@Smoke] User should login successfully with valid credentials', async ({page, loginPage}) => {
     await loginPage. login(users.validUser.email, users.validUser.password);
     await expect(page).toHaveURL(/account/);
-    //await expect(loginPage.userMenu).toBe Visible();
+    //await expect(loginPage.userMenu).toBe Visible(); This is commented
     });
 
     test('[@Regression] User should not login with invalid password', async ({ loginPage }) => {
