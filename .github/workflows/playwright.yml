@@ -1,9 +1,9 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master, develop, feature/** ]
+    branches: [ main, develop]
   pull_request:
-    branches: [ main, master, develop, feature/** ]
+    branches: [ develop, main]
 jobs:
   test:
     timeout-minutes: 60
@@ -12,7 +12,8 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+        node-version: 22
+        cache: 'npm'
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -23,6 +24,12 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-report
-        path: playwright-report/
+        name: test-results
+        path: test-results/
         retention-days: 30
+    - name: Upload Traces
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+       name: playwright-traces
+       path: test-results/
